@@ -31,6 +31,7 @@ import java.time.Duration;
 @Slf4j
 @Configuration
 @EnableCaching
+// 同时使用 @Configuration 与 @EnableConfigurationProperties 解析yaml文件中属性，参看关与 @EnableConfigurationProperties 注解
 @ConditionalOnClass(RedisOperations.class)
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisConfig extends CachingConfigurerSupport {
