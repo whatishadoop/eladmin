@@ -4,6 +4,7 @@ import me.zhengjie.utils.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
@@ -14,6 +15,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableWebSocketMessageBroker
+@ImportResource(locations = { "classpath:druid-bean.xml" })
 public class AppRun {
 
     public static void main(String[] args) {

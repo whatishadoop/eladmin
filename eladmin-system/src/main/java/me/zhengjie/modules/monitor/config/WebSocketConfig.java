@@ -22,8 +22,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
+    /**
+     * 在什么情况下使用线程池
+     * 1.单个任务处理的时间比较短
+     * 2.需处理的任务的数量大
+     *
+     * 使用线程池的好处:
+     * 1.减少在创建和销毁线程上所花的时间以及系统资源的开销
+     * 2.如不使用线程池，有可能造成系统创建大量线程而导致消耗完系统内存
+     */
     @Autowired
-    private ExecutorService executorService;
+    private ExecutorService executorService; // java线程池ExecutorService
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -35,13 +44,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     /**
      * 推送日志到/topic/pullLogger
      */
-    @PostConstruct
+    @PostConstruct  // 项目启动时，初始websocket服务
     public void pushLogger(){
         Runnable runnable=new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     try {
+                        // 若队列中没有实例则阻塞
                         LogMessage log = LoggerQueue.getInstance().poll();
                         if(log!=null){
                             // 格式化异常堆栈信息
