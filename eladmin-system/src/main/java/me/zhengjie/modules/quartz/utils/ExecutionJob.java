@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+
 import javax.annotation.Resource;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -23,6 +24,7 @@ import java.util.concurrent.Future;
  * @date 2019-01-07
  */
 @Async
+// @DisallowConcurrentExecution // 设置异步执行
 public class ExecutionJob extends QuartzJobBean {
 
     @Resource(name = "scheduler")
@@ -33,6 +35,7 @@ public class ExecutionJob extends QuartzJobBean {
     @Autowired
     private ExecutorService executorService;
 
+    // 下面定义定时操作的代码
     @Override
     protected void executeInternal(JobExecutionContext context) {
         QuartzJob quartzJob = (QuartzJob) context.getMergedJobDataMap().get(QuartzJob.JOB_KEY);
@@ -53,6 +56,7 @@ public class ExecutionJob extends QuartzJobBean {
             logger.info("任务准备执行，任务名称：{}", quartzJob.getJobName());
             QuartzRunnable task = new QuartzRunnable(quartzJob.getBeanName(), quartzJob.getMethodName(),
                     quartzJob.getParams());
+            // 在使用线程池调度任务
             Future<?> future = executorService.submit(task);
             future.get();
             long times = System.currentTimeMillis() - startTime;

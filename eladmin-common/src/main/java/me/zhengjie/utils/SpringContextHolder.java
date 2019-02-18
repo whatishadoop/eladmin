@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 /**
  * @author
  * @date 2019-01-07
+ * 解决utils包下的文件中写一个方法的时候想去使用@autowired注入一些对象
  */
 @Slf4j
 public class SpringContextHolder implements ApplicationContextAware, DisposableBean {
@@ -58,6 +59,7 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
         applicationContext = null;
     }
 
+    // 通过bean实现InitializingBean和 DisposableBean接口，用于实例销毁前执行，清空applicationContext,等同于通过@PostConstruct 和 @PreDestroy 方法 实现初始化和销毁bean之前进行的操作
     @Override
     public void destroy() throws Exception {
         SpringContextHolder.clearHolder();

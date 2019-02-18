@@ -32,6 +32,7 @@ public class QuartzRunnable implements Runnable {
 	@Override
 	public void run() {
 		try {
+			// 使 filed 变为可访问
 			ReflectionUtils.makeAccessible(method);
 			if (StringUtils.isNotBlank(params)) {
 				method.invoke(target, params);

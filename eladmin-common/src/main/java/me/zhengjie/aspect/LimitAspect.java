@@ -19,7 +19,7 @@ import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-
+// 配置切面
 @Aspect
 @Component
 public class LimitAspect {
@@ -27,7 +27,8 @@ public class LimitAspect {
     private RedisTemplate redisTemplate;
     private static final Logger logger = LoggerFactory.getLogger(LimitAspect.class);
 
-
+    // 方法一: "execution(public * com.example.demo.controller.*.*(..)) && @annotation(com.example.demo.controller.MyAnnotation)"，这样在controller包下，只有我们加上@MyAnnotation注解的方法切面方法才会起作用。
+    // 方法二: 加载切点注解类定义上，从而实现注解切面 ,此时只要加注解就实现切面功能
     @Pointcut("@annotation(me.zhengjie.aop.limit.Limit)")
     public void pointcut() {
     }
@@ -65,7 +66,7 @@ public class LimitAspect {
     }
 
     /**
-     * 限流脚本
+     * lua限流脚本
      */
     private String buildLuaScript() {
         return "local c" +

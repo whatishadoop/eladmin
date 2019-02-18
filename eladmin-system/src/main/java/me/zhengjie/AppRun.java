@@ -14,7 +14,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
  */
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableWebSocketMessageBroker
+@EnableWebSocketMessageBroker  // 开启websocket
 @ImportResource(locations = { "classpath:druid-bean.xml" })
 public class AppRun {
 
